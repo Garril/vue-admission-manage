@@ -22,4 +22,8 @@ export default {
   #app {
     height: 100vh;
   }
+  .el-main {
+    display: flex !important;
+    line-height: 30px !important;
+  }  
 </style>
