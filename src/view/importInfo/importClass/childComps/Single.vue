@@ -39,7 +39,7 @@
           <el-button size="small" @click="onQuitUpload">清空</el-button>
         </el-form-item>
         
-      </el-form>    
+      </el-form>
   </div>
 </template>
 
