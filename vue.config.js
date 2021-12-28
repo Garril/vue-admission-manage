@@ -24,7 +24,7 @@ module.exports = {
         'components': '@/components',
         'network': '@/network',
         'views': '@/views',
-        
+        'utils': '@/utils',
         // 'router': '@/router', router和store不需要了，$router和$store直接引用对象
       }
     }

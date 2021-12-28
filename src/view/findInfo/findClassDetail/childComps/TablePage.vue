@@ -94,13 +94,11 @@ export default {
   methods: {
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
         this.currentPage = 1;
         this.pageSize = val;
     },
     //当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.currentPage = val;
     },
     handleEdit(index,item) {

@@ -5,7 +5,7 @@
       <el-button size="small" @click="chooseImport(false)">录取号查询</el-button>
     </div>
 
-    <el-form ref="form" label-width="80px" size="small">
+    <el-form ref="form" label-width="80px" size="small" >
 
       <el-form-item label="学号" v-if="sign">
         <el-input v-model="sno" placeholder="请输入学号"></el-input>
@@ -141,6 +141,7 @@ export default {
       sign:true,
       sno:'',
       stuInfo:[],
+      tempInfo:[],
       dialogFormVisible:false,
       form: {
         sno:""
@@ -155,27 +156,33 @@ export default {
       this.sign = t;
     },
     onSubmit() {
-      findStu(this.sno,this.sign).then(res => {
-        if(res.status == '200') {
-          if(res.data!='') {
-            const obj = res.data;
-            if(obj.sex==1) {
-              obj.sex = "男"
+      if(this.sno=='') {
+        this.stuInfo = this.tempInfo;
+      } else {
+          findStu(this.sno,this.sign).then(res => {
+          if(res.status == '200') {
+            if(res.data!='') {
+              const obj = res.data;
+              if(obj.sex==1) {
+                obj.sex = "男"
+              } else {
+                obj.sex = "女"
+              }
+              obj.year = obj.year.slice(0,4);
+              if(this.stuInfo.length!=0) {
+                this.tempInfo = this.stuInfo;
+                this.stuInfo = [];
+              }
+              this.stuInfo.push(obj);           
             } else {
-              obj.sex = "女"
+              alert("请检查输入的信息")
             }
-            obj.year = obj.year.slice(0,4);
-            if(this.stuInfo.length!=0) {
-              this.stuInfo.pop();
-            }
-            this.stuInfo.push(obj);            
           } else {
-            alert("请检查输入的信息")
+            alert("查找失败！请检查信息")
           }
-        } else {
-          alert("查找失败！请检查信息")
-        }
-      })
+        })
+      }
+      
     },
     handleDelete(index,item) {
       this.$confirm(`确定删除 学号为:${ this.stuInfo[0].sno } 的学生?`).then(res=>{
@@ -210,13 +217,11 @@ export default {
     },
       //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
         this.currentPage = 1;
         this.pageSize = val;
     },
     //当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.currentPage = val;
     },
 
@@ -256,5 +261,9 @@ export default {
   #find_stu .el-dialog__footer button:first-of-type {
     margin-right: 15px;
   }
-
+  #find_stu .el-form {
+    width: 42%;
+    flex-direction: row;
+    margin: 28px 0 5px 0;
+  }
 </style>

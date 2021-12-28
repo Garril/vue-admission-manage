@@ -1,6 +1,6 @@
 <template>
   <div id="find_all_class">
-    findallclass
+    
   </div>
 </template>
 
