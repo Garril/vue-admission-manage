@@ -1,23 +1,18 @@
 <template>
-  <div id="find_all_class">
-    
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
 export default {
-  name:'',
+  name:"",
   data() {
     return {
-
+      
     }
   },
   methods: {
-
-  },
-  created() {
     
-  }
+  },
 }
 </script>
 

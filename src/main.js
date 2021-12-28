@@ -8,11 +8,14 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import htmlToPdf from "utils/htmlToPdf.js"
 
 Vue.config.debug = true
 
 
 Vue.use(ElementUI)
+
+Vue.use(htmlToPdf)
 
 Vue.config.productionTip = false
 
