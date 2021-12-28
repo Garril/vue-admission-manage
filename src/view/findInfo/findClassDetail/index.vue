@@ -4,6 +4,10 @@
     <div id="find_choice_form">
       <el-form :inline="true" :model="form" class="findclass_detail_form">
         
+        <el-form-item label="学号查询">
+          <el-input v-model="form.sno" placeholder="可选-优先级最高"></el-input>
+        </el-form-item>
+
         <el-form-item label="学历">
           <el-select v-model="form.degree" placeholder="请选择学历-不能为空">
             <el-option label="本科" value="3"></el-option>
@@ -43,7 +47,7 @@
 
 <script>
 import { findDepSpe } from 'network/find/findDepSpe.js'
-import { findClassByDep,findClassBySpe } from 'network/find/findClass.js'
+import { findClassByDep,findClassBySpe,findClassBySno } from 'network/find/findClass.js'
 import TablePage from './childComps/TablePage.vue'
 
 export default {
@@ -53,7 +57,8 @@ export default {
       form: {
         degree:'',
         dep_id: '',
-        spe_id: ''
+        spe_id: '',
+        sno:''
       },
       data:[],
       right_spe:[],
@@ -66,38 +71,48 @@ export default {
   },
   methods: {
     onSubmit() {
-      if(this.form.spe_id =='') { // 表示没有填专业
-        findClassByDep(this.form.dep_id,this.form.degree).then( res => {
-          if(res.status=='200') {
-            if(res.data.length !=0 ) {
-              this.tempArr = res.data;
-              this.tempArr.map(item => {
-                item.year = item.year.slice(0,4);
-              })
-              this.classInfo = this.tempArr;
-            } else {
-              alert("不存在对应班级,请改变检索条件")
-            }
-          } else {
-            alert("请求查询失败,请重试");
-          }
+      if(this.form.sno!='') {
+        findClassBySno(this.form.sno).then(res => {
+          this.tempArr = res.data;
+          this.tempArr.map(item => {
+            item.year = item.year.slice(0,4);
+          })
+          this.classInfo = this.tempArr;        
         })
-      } else {
-        findClassBySpe(this.form.dep_id,this.form.degree,this.form.spe_id).then( res => {
-          if(res.status=='200') {
-            if(res.data.length !=0 ) {
-              this.tempArr = res.data;
-              this.tempArr.map(item => {
-                item.year = item.year.slice(0,4);
-              })
-              this.classInfo = this.tempArr;
+      } else { // 学号没填，考虑专业和学院
+        if(this.form.spe_id =='') { // 表示没有填专业
+          findClassByDep(this.form.dep_id,this.form.degree).then( res => {
+            if(res.status=='200') {
+              if(res.data.length !=0 ) {
+                this.tempArr = res.data;
+                this.tempArr.map(item => {
+                  item.year = item.year.slice(0,4);
+                })
+                this.classInfo = this.tempArr;
+              } else {
+                alert("不存在对应班级,请改变检索条件")
+              }
             } else {
-              alert("不存在对应班级,请改变检索条件")
+              alert("请求查询失败,请重试");
             }
-          } else {
-            alert("请求查询失败,请重试");
-          }
-        })
+          })
+        } else {
+          findClassBySpe(this.form.dep_id,this.form.degree,this.form.spe_id).then( res => {
+            if(res.status=='200') {
+              if(res.data.length !=0 ) {
+                this.tempArr = res.data;
+                this.tempArr.map(item => {
+                  item.year = item.year.slice(0,4);
+                })
+                this.classInfo = this.tempArr;
+              } else {
+                alert("不存在对应班级,请改变检索条件")
+              }
+            } else {
+              alert("请求查询失败,请重试");
+            }
+          })
+        }
       }
     },
     dep_change(dep_id) {
@@ -112,7 +127,18 @@ export default {
   created() {
     findDepSpe().then(res => {
       this.data = res.data;
-    });    
+    });
+    findClassByDep(" "," ").then(res => {
+      if(res.status =='200') {
+        this.tempArr = res.data;
+        this.tempArr.map(item => {
+          item.year = item.year.slice(0,4);
+        })
+        this.classInfo = this.tempArr;        
+      }
+    }).catch(err => {
+      console.log(err);
+    })
   }
 }
 </script>
@@ -127,6 +153,12 @@ export default {
   }
   #find_class_detail .findclass_detail_form .el-form-item__label{
     color: black;
+  }
+  #find_class_detail .findclass_detail_form .el-form-item{
+    width: 250px;
+  }
+  #find_class_detail .findclass_detail_form .el-form-item:first-of-type{
+    width: 300px;
   }
   #find_class_detail .findclass_detail_form .el-form-item:last-of-type{
     width: 70px;

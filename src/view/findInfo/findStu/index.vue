@@ -22,7 +22,7 @@
     </el-form>
 
     <el-table
-      :data="stuInfo"
+      :data="stuInfo.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
 
       <el-table-column
@@ -99,6 +99,17 @@
               
     </el-table>
 
+    <!-- 分页器 -->
+    <div class="block" style="margin-top:15px;">
+        <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+        :current-page="currentPage" 
+        :page-sizes="[5,10,20]" 
+        :page-size="pageSize" 
+        layout="total, sizes, prev, pager, next, jumper" 
+        :total="stuInfo.length">
+        </el-pagination>
+    </div>  
+
     <el-dialog title="修改学号" :visible.sync="dialogFormVisible" center>
 
       <el-form :model="form" label-width="80px" id="new_sno_form">
@@ -117,7 +128,7 @@
 </template>
 
 <script>
-import { findStu } from 'network/find/findStu.js'
+import { findStu,finAllStu } from 'network/find/findStu.js'
 import { reviseStuBySno } from 'network/revise/revise.js'
 import { deleteStuBySno } from 'network/delete/delete.js'
 
@@ -134,6 +145,9 @@ export default {
       form: {
         sno:""
       },
+      currentPage: 1, // 当前页码
+      total: 20, // 总条数
+      pageSize: 5, // 每页的数据条数  
     }
   },
   methods: {
@@ -193,12 +207,24 @@ export default {
         }
       })
       this.stuInfo[0].sno = this.form.sno;
-    }  
-
+    },
+      //每页条数改变时触发 选择一页显示多少行
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.currentPage = 1;
+        this.pageSize = val;
+    },
+    //当前页改变时触发 跳转其他页
+    handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage = val;
+    },
 
   },
   created() {
-    
+    finAllStu().then(res=>{
+      this.stuInfo = res.data;
+    })
   }
 }
 </script>

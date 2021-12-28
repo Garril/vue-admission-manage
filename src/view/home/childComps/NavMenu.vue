@@ -26,7 +26,7 @@
           <el-submenu index="/find">
             <template slot="title">
                 <i class="el-icon-s-custom"></i>
-                <span>查询</span>
+                <span>查询和修改</span>
             </template>
 
             <el-menu-item-group>
@@ -36,6 +36,17 @@
             </el-menu-item-group>
           </el-submenu>
 
+          <!-- 生成录取通知书模块 -->
+          <el-submenu index="/create">
+            <template slot="title">
+                <i class="el-icon-s-custom"></i>
+                <span>生成</span>
+            </template>
+
+            <el-menu-item-group>
+                <el-menu-item index="/createBook">生成录取通知书</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
 
       </el-menu>
 

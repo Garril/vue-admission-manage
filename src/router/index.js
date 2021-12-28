@@ -86,6 +86,22 @@ export const asyncRoutes = [
             component: () => import('../view/findInfo/findAllClassSitu/index.vue')
           }
         ]
+      },
+      {
+        path:'/create',
+        meta: {
+          title: '生成'
+        },
+        component: () => import('../view/create/index.vue'),
+        children: [
+          {
+            path:'/createBook',
+            meta: {
+              title: '生成录取通知书'
+            },
+            component: () => import('../view/create/createBook/index.vue')
+          }
+        ]
       }
 
     ]
