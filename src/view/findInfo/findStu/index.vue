@@ -28,19 +28,19 @@
       <el-table-column
         prop="id"
         label="录取号"
-        width="130">
+        width="110">
       </el-table-column>
 
       <el-table-column
         prop="sno"
         label="学号"
-        width="130">
+        width="110">
       </el-table-column>
 
       <el-table-column
         prop="degree"
         label="年级"
-        width="80">
+        width="60">
       </el-table-column>
 
       <el-table-column
@@ -52,31 +52,31 @@
       <el-table-column
         prop="number"
         label="班中序号"
-        width="100">
+        width="80">
       </el-table-column>
 
       <el-table-column
         prop="sex"
         label="性别"
-        width="100">
+        width="80">
       </el-table-column>
 
       <el-table-column
         prop="dep_name"
         label="学院"
-        width="180">
+        width="160">
       </el-table-column>
 
       <el-table-column
         prop="spe_name"
         label="专业"
-        width="180">
+        width="160">
       </el-table-column>
 
       <el-table-column
         prop="class_name"
         label="班级名称"
-        width="200">
+        width="180">
       </el-table-column>
       
       <el-table-column
@@ -85,13 +85,43 @@
         width="80">
       </el-table-column>
       
+      <el-table-column label="操作" width="150" v-if="sign">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+              
     </el-table>
+
+    <el-dialog title="修改学号" :visible.sync="dialogFormVisible" center>
+
+      <el-form :model="form" label-width="80px" id="new_sno_form">
+        <el-form-item label="新学号" label-width="120px">
+          <el-input v-model="form.sno" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer" id="newsno_form_btns">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateByNewSno()">确 定</el-button>
+      </div>
+    </el-dialog>    
 
   </div>
 </template>
 
 <script>
 import { findStu } from 'network/find/findStu.js'
+import { reviseStuBySno } from 'network/revise/revise.js'
+import { deleteStuBySno } from 'network/delete/delete.js'
+
+
 
 export default {
   name:'',
@@ -99,7 +129,11 @@ export default {
     return {
       sign:true,
       sno:'',
-      stuInfo:[]
+      stuInfo:[],
+      dialogFormVisible:false,
+      form: {
+        sno:""
+      },
     }
   },
   methods: {
@@ -128,7 +162,40 @@ export default {
           alert("查找失败！请检查信息")
         }
       })
-    }
+    },
+    handleDelete(index,item) {
+      this.$confirm(`确定删除 学号为:${ this.stuInfo[0].sno } 的学生?`).then(res=>{
+        // res: confirm
+        deleteStuBySno(this.stuInfo[0].sno).then(res => {
+          if(res.status == '200') {
+            alert("删除成功!");
+            // 清空数据
+            this.sno = "";
+            this.stuInfo= [];
+          } else {
+            alert("删除失败!");
+          }
+        })
+      }).catch(err=>{ //err: cancel
+
+      });
+    },
+    handleEdit(index,item) {
+      this.dialogFormVisible = true;
+    },
+    updateByNewSno() {
+      this.dialogFormVisible = false;
+      reviseStuBySno(this.stuInfo[0].sno,this.form.sno).then(res => {
+        if(res.status == '200') {
+          alert("修改成功");
+        } else {
+          alert("修改失败");
+        }
+      })
+      this.stuInfo[0].sno = this.form.sno;
+    }  
+
+
   },
   created() {
     
@@ -147,4 +214,21 @@ export default {
   #find_stu .el-form-item__label {
     color: rgb(19, 22, 18);
   }
+  
+  #find_stu #new_sno_form {
+    position: absolute;
+    height: 20px;
+    left:26%;
+  }
+  #find_stu .el-dialog__header{
+    margin-bottom: 40px;
+  }
+  #find_stu .el-dialog__footer {
+    margin-top: 20px;
+    padding-bottom: 30px;
+  }
+  #find_stu .el-dialog__footer button:first-of-type {
+    margin-right: 15px;
+  }
+
 </style>
