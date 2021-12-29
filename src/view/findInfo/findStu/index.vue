@@ -21,6 +21,7 @@
       
     </el-form>
 
+
     <el-table
       :data="stuInfo.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
@@ -79,11 +80,6 @@
         width="180">
       </el-table-column>
       
-      <el-table-column
-        prop="year"
-        label="入学年份"
-        width="80">
-      </el-table-column>
       
       <el-table-column label="操作" width="150" v-if="sign">
         <template slot-scope="scope">

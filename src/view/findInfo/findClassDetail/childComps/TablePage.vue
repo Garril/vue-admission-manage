@@ -15,8 +15,17 @@
           </el-table-column>
           <el-table-column prop="girl" label="女生人数" width="120">
           </el-table-column>
+
+          <el-table-column
+            label="总人数"
+            width="80">
+            <template slot-scope="scope">
+              <span>{{parseInt(scope.row.boy)+parseInt(scope.row.girl)}}</span>
+            </template>
+          </el-table-column>          
           <el-table-column prop="year" label="建班年份" width="100">
           </el-table-column>
+          
           <!-- 修改班级名称 -->
           <el-table-column label="操作" width="180">
             <template slot-scope="scope">

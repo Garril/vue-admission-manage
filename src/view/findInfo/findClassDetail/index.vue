@@ -36,7 +36,7 @@
         <el-form-item>
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
-      </el-form>      
+      </el-form>
     </div>
 
     <!-- 表单信息 -->
