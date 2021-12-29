@@ -167,8 +167,6 @@ export default {
     margin-right: 15px;
   }  
   #table_page #back_btn {
-    position: absolute;
-    right: 54px;
-    top: 80px;
+    transform: translate(632px,-63px);
   }
 </style>
