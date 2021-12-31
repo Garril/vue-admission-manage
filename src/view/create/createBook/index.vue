@@ -1,5 +1,5 @@
 <template>
-  <div id="create_book">
+  <div id="create_book" v-if="stuInfo!=null">
     
     <div id="pdfCentent">
       <div id="bookbox">
@@ -32,6 +32,9 @@
     <el-button type="danger" @click="ExportSavePdf(htmlTitle,nowTime)" id="pdf_btn">导出PDF</el-button>
 
   </div>
+  <div v-else>
+    <h3>请到查询和修改功能选择学生~</h3>
+  </div>
 
 </template>
 
@@ -46,7 +49,7 @@ export default {
       stuInfo:{},
       htmlTitle: "录取通知书",
       nowTime: "",
-      studyYear:"3", // x年制本科生
+      studyYear:"4", // x年制本科生
       arriveDay:"9月1日", // 学生报到日期
       footDate:"二〇二一年七月二十八日", // 通知书底部日期
     }
@@ -78,16 +81,21 @@ export default {
 
   },
   created() {
-    this.stuInfo = this.$route.query.stuInfo;
-    this.stuInfo.url = this.stuInfo.url.substring(53);
+    if(this.$route.query.stuInfo !=null ) {
+      this.stuInfo = this.$route.query.stuInfo;
+      this.stuInfo.url = this.stuInfo.url.substring(53);
+    } else {
+      this.stuInfo = null;
+    }
   }
 }
 </script>
 
 <style>
-#bookbox {
-  width: 769px;
-  height: 990px;
+
+#create_book #bookbox {
+  width: 869px;
+  height: 1020px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,37 +103,38 @@ export default {
   border: 1px solid #5c5c58;
   background-color: #ffffff;
   margin-bottom: 40px;
+  padding: 0 50px 30px 50px;
 }
 
-#bookbox_head {
+#create_book #bookbox_head {
   height: 150px;
   padding-top: 100px;
 }
 
-#bookbox_content {
+#create_book #bookbox_content {
   margin-top: 150px;
   width: 528px;
   flex: 1;
 }
 
-#bookbox_content div:first-of-type {
+#create_book #bookbox_content div:first-of-type {
   display: flex;
   flex-wrap: nowrap;
   justify-content:space-between;
 }
-#bookbox_content div:first-of-type span:first-of-type{
+#create_book #bookbox_content div:first-of-type span:first-of-type{
   font-size: 25px;
   font-weight: bolder;
   transform: translateY(80px);
 }
 
-#bookbox_content div:first-of-type span:first-of-type{
+#create_book #bookbox_content div:first-of-type span:first-of-type{
   font-size: 25px;
   font-weight: bolder;
   transform: translateY(80px);
 }
 
-#bookbox_content div:last-of-type{
+#create_book #bookbox_content div:last-of-type{
   display: flex;
   flex-wrap: nowrap;
   justify-content:space-between;
@@ -133,7 +142,7 @@ export default {
   font-size: 17px;
 }
 
-#bookbox_foot {
+#create_book #bookbox_foot {
   height: 30px;
   width: 100%;
   font-size: 17px;
@@ -141,12 +150,12 @@ export default {
   padding-right: 40px;
 }
 
-#book_avatar img{
+#create_book #book_avatar img{
   width: 120px;
   height: 120px;
   margin:10px;
 }
-#content_text {
+#create_book #content_text {
   margin-top: 50px;
   text-align: left;
   line-height: 50px;
@@ -156,6 +165,9 @@ export default {
   text-indent: 3rem;
 }
 #create_book{
-  padding-left: 20%;
+  padding-left: 18%;
+}
+#create_book #pdf_btn {
+  margin-bottom: 50px;
 }
 </style>

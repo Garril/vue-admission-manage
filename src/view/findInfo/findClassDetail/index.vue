@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="form" class="findclass_detail_form">
         
         <el-form-item label="学号查询">
-          <el-input v-model="form.sno" placeholder="可选-优先级最高"></el-input>
+          <el-input v-model="form.sno" placeholder="可选-优先级最高" @keyup.enter.native="onSubmit"></el-input>
         </el-form-item>
 
         <el-form-item label="学历">

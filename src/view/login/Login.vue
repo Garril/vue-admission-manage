@@ -4,11 +4,11 @@
       <p id="title">Login</p>
       <!-- 姓名 -->
       <el-form-item label="用户名" prop="name">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model="form.name"  @keyup.enter.native="onSubmit"></el-input>
       </el-form-item>
       <!-- 密码 -->
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password"  type="password"></el-input>
+        <el-input v-model="form.password"  type="password" @keyup.enter.native="onSubmit"></el-input>
       </el-form-item>
       <!-- 登录按钮 -->
       <el-form-item class="sign">

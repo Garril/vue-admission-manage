@@ -80,13 +80,13 @@ export default {
         },
         series: [
           {
-            name: 'Access From',
+            name: '人数',
             type: 'pie',
             radius: '70%',
             data: [
-              { value: 500, name: 'boy' },
-              { value: 500, name: 'girl' },
-              { value: 1000, name: 'count' },
+              { value: 500, name: '男生' },
+              { value: 900, name: '女生' },
+              { value: 1400, name: '总人数' },
             ],
             emphasis: {
               itemStyle: {
@@ -116,9 +116,9 @@ export default {
               this.tempArr = [];
             }
             let all = parseInt(this.info.boy) + parseInt(this.info.girl);
-            this.tempArr.push({ value:this.info.boy, name:'boy'});
-            this.tempArr.push({ value:this.info.girl, name:'girl'});
-            this.tempArr.push({ value:all, name:'count'});
+            this.tempArr.push({ value:this.info.boy, name:'男生'});
+            this.tempArr.push({ value:this.info.girl, name:'女生'});
+            this.tempArr.push({ value:all, name:'总人数'});
             this.refreshData(this.tempArr);
           }
         })
@@ -130,9 +130,9 @@ export default {
               this.tempArr = [];
             }
             let all = parseInt(this.info.boy) + parseInt(this.info.girl);
-            this.tempArr.push({ value:this.info.boy, name:'boy'});
-            this.tempArr.push({ value:this.info.girl, name:'girl'});
-            this.tempArr.push({ value:all, name:'count'});
+            this.tempArr.push({ value:this.info.boy, name:'男生'});
+            this.tempArr.push({ value:this.info.girl, name:'女生'});
+            this.tempArr.push({ value:all, name:'总人数'});
             this.refreshData(this.tempArr);
           }
         })
