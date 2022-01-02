@@ -57,7 +57,8 @@
   #index {
     height: 100vh;
   }
-  .el-header, .el-footer {
+  #index .el-header,
+  #index .el-footer {
     background-color: #B3C0D1;
     display: flex;
     color: #333;
@@ -67,14 +68,14 @@
   }
 
   
-  .el-aside {
+  #index .el-aside {
     background-color: #D3DCE6;
     color: #333;
     text-align: center;
     line-height: 200px;
   }
   
-  .el-main {
+  #index .el-main {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
@@ -86,27 +87,27 @@
     margin-bottom: 40px;
   }
   
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
+  #index .el-container:nth-child(5) .el-aside,
+  #index .el-container:nth-child(6) .el-aside {
     line-height: 260px;
   }
   
-  .el-container:nth-child(7) .el-aside {
+  #index .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
   
-  .el-container {
+  #index .el-container {
     height: 100%;
   }
 
-  .el-button {
+  #index .el-button {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 60%;
     margin-top: 14px;
   }
-  #left_header {
+  #index #left_header {
     border-bottom: 1px solid rgb(31, 45, 61);
   }
 </style>

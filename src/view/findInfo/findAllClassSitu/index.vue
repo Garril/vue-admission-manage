@@ -156,9 +156,10 @@ export default {
 
 <style>
   #find_all_class {
-    padding-left: 50px;
+    padding-left: 40px;
   }
   #find_all_class .findclass_detail_form{
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;

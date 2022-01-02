@@ -5,7 +5,7 @@
       <el-button size="small" @click="chooseImport(false)">录取号查询</el-button>
     </div>
 
-    <el-form ref="form" label-width="80px" size="small" >
+    <el-form ref="form" label-width="80px" size="small" :inline="true">
 
       <el-form-item label="学号" v-show="sign">
         <el-input v-model="sno" placeholder="请输入学号" @keyup.enter.native="onSubmit"></el-input>
@@ -271,9 +271,10 @@ export default {
     margin-right: 15px;
   }
   #find_stu .el-form {
+    display: flex;
     width: 42%;
     flex-direction: row;
-    margin: 28px 0 5px 0;
+    margin: 28px 0 5px -15px;
   }
   #find_stu .el-form .el_import_btns .el-form-item__content {
     margin-left: 35px !important;

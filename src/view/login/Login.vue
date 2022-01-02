@@ -80,7 +80,7 @@ export default {
     background-image: url('../../assets/img/login_bg.png');
     background-size: cover;
   }
-  #title {
+  #login #title {
     font-size: 35px;
     font-family: Helvetice;
     font-weight: bolder;
@@ -88,7 +88,7 @@ export default {
     margin: 20px 0;
     transform: translateX(-13px);
   }
-  .el-form {
+  #login .el-form {
     color: rgb(8, 47, 83);
     width: 330px;
     display: flex;
@@ -96,14 +96,14 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .el-form-item__label {
+  #login .el-form-item__label {
     color: white;
   }
-  .el-form-item {
+  #login .el-form-item {
     width: 300px;
     transform: translateX(-14%);
   }
-  .el-form-item.sign {
+  #login .el-form-item.sign {
     transform: translateX(5%);
   }
 </style>

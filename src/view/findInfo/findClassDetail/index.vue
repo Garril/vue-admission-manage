@@ -5,11 +5,11 @@
       <el-form :inline="true" :model="form" class="findclass_detail_form">
         
         <el-form-item label="学号查询">
-          <el-input v-model="form.sno" placeholder="可选-优先级最高" @keyup.enter.native="onSubmit"></el-input>
+          <el-input v-model="form.sno" placeholder="可选-优先级最高" @keyup.enter.native="onSubmit" size="middle"></el-input>
         </el-form-item>
 
         <el-form-item label="学历">
-          <el-select v-model="form.degree" placeholder="请选择学历-不能为空">
+          <el-select v-model="form.degree" placeholder="请选择学历-不能为空" size="middle">
             <el-option label="本科" value="3"></el-option>
             <el-option label="硕士" value="2"></el-option>
             <el-option label="博士" value="1"></el-option>
@@ -17,7 +17,7 @@
         </el-form-item>
         
         <el-form-item label="学院">
-          <el-select v-model="form.dep_id" placeholder="请选择学院-不能为空" @change="dep_change">
+          <el-select v-model="form.dep_id" placeholder="请选择学院-不能为空" @change="dep_change" size="middle">
             <span v-for="(item,index) in data">
               <el-option :label="item.dep_name" :value="item.dep_id"></el-option>
             </span>
@@ -25,7 +25,7 @@
         </el-form-item>
 
         <el-form-item label="专业">
-          <el-select v-model="form.spe_id" placeholder="请选择专业-可以为空">
+          <el-select v-model="form.spe_id" placeholder="请选择专业-可以为空" size="middle">
             <el-option label="" value=""></el-option>
             <span v-for="(item,index) in right_spe">
               <el-option :label="item" :value="index+1"></el-option>
@@ -156,10 +156,9 @@ export default {
 </script>
 
 <style>
-  #find_choice_form {
-    padding-left: 20px;
-  }
+
   #find_class_detail .findclass_detail_form{
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
