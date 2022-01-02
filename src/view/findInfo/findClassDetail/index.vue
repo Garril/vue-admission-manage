@@ -161,6 +161,7 @@ export default {
   }
   #find_class_detail .findclass_detail_form{
     flex-direction: row;
+    justify-content: space-around;
     width: 100%;
   }
   #find_class_detail .findclass_detail_form .el-form-item__label{
@@ -170,7 +171,7 @@ export default {
     width: 250px;
   }
   #find_class_detail .findclass_detail_form .el-form-item:first-of-type{
-    width: 300px;
+    width: 280px;
   }
   #find_class_detail .findclass_detail_form .el-form-item:last-of-type{
     width: 70px;
