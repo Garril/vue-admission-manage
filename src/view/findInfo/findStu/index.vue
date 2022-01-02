@@ -141,7 +141,7 @@ export default {
       sign:true,
       sno:'',
       stuInfo:[],
-      tempInfo:[],
+      allInfo:[],
       dialogFormVisible:false,
       form: {
         sno:""
@@ -157,7 +157,10 @@ export default {
     },
     onSubmit() {
       if(this.sno=='') {
-        this.stuInfo = this.tempInfo;
+        this.stuInfo = this.allInfo;
+        this.total = 20;
+        this.currentPage = 1;
+        this.pageSize = 6;
       } else {
           findStu(this.sno,this.sign).then(res => {
           if(res.status == '200') {
@@ -170,10 +173,12 @@ export default {
               }
               obj.year = obj.year.slice(0,4);
               if(this.stuInfo.length!=0) {
-                this.tempInfo = this.stuInfo;
                 this.stuInfo = [];
               }
-              this.stuInfo.push(obj);           
+              this.stuInfo.push(obj);
+              this.currentPage = 1;
+              this.total = 1;
+              this.pageSize = 1;
             } else {
               alert("请检查输入的信息")
             }
@@ -232,7 +237,7 @@ export default {
   created() {
     finAllStu().then(res=>{
       this.stuInfo = res.data;
-      this.tempInfo = res.data;
+      this.allInfo = res.data;
     })
   }
 }

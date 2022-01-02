@@ -84,7 +84,7 @@ export default {
   name:'table_page',
   data() {
     return {
-      currentPage: 1, // 当前页码
+      //currentPage: 1, // 当前页码，也应该是父组件传
       total: 20, // 总条数
       pageSize: 8, // 每页的数据条数
       showSign:false,
@@ -99,7 +99,7 @@ export default {
   components: {
     StuList
   },
-  props: ['classInfo'],
+  props: ['classInfo','currentPage'],
   methods: {
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {

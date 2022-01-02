@@ -19,18 +19,6 @@ export function finAllStu() {
   })
 }
 
-
-export function findStuBookInfo(sno) {
-  return request({
-    url: '/find/bookInfo',
-    method: 'get',
-    params: {
-      sno
-    },
-    timeout: 5000,
-  })
-}
-
 export function findClassAllStu(degree,dep_id,spe_id,class_no) {
   return request({
     url: '/find/classAllStu',
