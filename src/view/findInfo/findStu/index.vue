@@ -5,14 +5,14 @@
       <el-button size="small" @click="chooseImport(false)">录取号查询</el-button>
     </div>
 
-    <el-form ref="form" label-width="80px" size="small" >
+    <el-form ref="form" label-width="80px" size="small" :inline="true">
 
-      <el-form-item label="学号" v-if="sign">
-        <el-input v-model="sno" placeholder="请输入学号"></el-input>
+      <el-form-item label="学号" v-show="sign">
+        <el-input v-model="sno" placeholder="请输入学号" @keyup.enter.native="onSubmit"></el-input>
       </el-form-item>
 
-      <el-form-item label="录取号" v-else>
-        <el-input v-model="sno" placeholder="请输入录取号"></el-input>
+      <el-form-item label="录取号" v-show="!sign">
+        <el-input v-model="sno" placeholder="请输入录取号" @keyup.enter.native="onSubmit"></el-input>
       </el-form-item>      
 
       <el-form-item class="el_import_btns">
@@ -20,6 +20,7 @@
       </el-form-item>
       
     </el-form>
+
 
     <el-table
       :data="stuInfo.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -46,7 +47,7 @@
       <el-table-column
         prop="name"
         label="姓名"
-        width="120">
+        width="110">
       </el-table-column>      
 
       <el-table-column
@@ -58,13 +59,13 @@
       <el-table-column
         prop="sex"
         label="性别"
-        width="80">
+        width="60">
       </el-table-column>
 
       <el-table-column
         prop="dep_name"
         label="学院"
-        width="160">
+        width="150">
       </el-table-column>
 
       <el-table-column
@@ -76,20 +77,19 @@
       <el-table-column
         prop="class_name"
         label="班级名称"
-        width="180">
+        width="170">
       </el-table-column>
       
-      <el-table-column
-        prop="year"
-        label="入学年份"
-        width="80">
-      </el-table-column>
       
-      <el-table-column label="操作" width="150" v-if="sign">
+      <el-table-column label="操作" width="280" v-if="sign">
         <template slot-scope="scope">
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="goToCreateBook(scope.$index, scope.row)">查看录取通知书</el-button>            
           <el-button
             size="mini"
             type="danger"
@@ -103,7 +103,7 @@
     <div class="block" style="margin-top:15px;">
         <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" 
         :current-page="currentPage" 
-        :page-sizes="[5,10,20]" 
+        :page-sizes="[6,10,20]" 
         :page-size="pageSize" 
         layout="total, sizes, prev, pager, next, jumper" 
         :total="stuInfo.length">
@@ -141,14 +141,14 @@ export default {
       sign:true,
       sno:'',
       stuInfo:[],
-      tempInfo:[],
+      allInfo:[],
       dialogFormVisible:false,
       form: {
         sno:""
       },
       currentPage: 1, // 当前页码
       total: 20, // 总条数
-      pageSize: 5, // 每页的数据条数  
+      pageSize: 6, // 每页的数据条数  
     }
   },
   methods: {
@@ -157,7 +157,10 @@ export default {
     },
     onSubmit() {
       if(this.sno=='') {
-        this.stuInfo = this.tempInfo;
+        this.stuInfo = this.allInfo;
+        this.total = 20;
+        this.currentPage = 1;
+        this.pageSize = 6;
       } else {
           findStu(this.sno,this.sign).then(res => {
           if(res.status == '200') {
@@ -170,10 +173,12 @@ export default {
               }
               obj.year = obj.year.slice(0,4);
               if(this.stuInfo.length!=0) {
-                this.tempInfo = this.stuInfo;
                 this.stuInfo = [];
               }
-              this.stuInfo.push(obj);           
+              this.stuInfo.push(obj);
+              this.currentPage = 1;
+              this.total = 1;
+              this.pageSize = 1;
             } else {
               alert("请检查输入的信息")
             }
@@ -224,11 +229,15 @@ export default {
     handleCurrentChange(val) {
         this.currentPage = val;
     },
+    goToCreateBook(index,item) { 
+      this.$router.push({path:'/createBook',query: {stuInfo:item}})
+    }
 
   },
   created() {
     finAllStu().then(res=>{
       this.stuInfo = res.data;
+      this.allInfo = res.data;
     })
   }
 }
@@ -262,8 +271,13 @@ export default {
     margin-right: 15px;
   }
   #find_stu .el-form {
+    display: flex;
     width: 42%;
     flex-direction: row;
-    margin: 28px 0 5px 0;
+    margin: 28px 0 5px -15px;
+  }
+  #find_stu .el-form .el_import_btns .el-form-item__content {
+    margin-left: 35px !important;
+    text-align: left;
   }
 </style>

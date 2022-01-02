@@ -8,12 +8,3 @@ export function findDepSpe() {
     timeout: 5000,
   })
 }
-
-// 3.2.1 搜索所有的学院,拿到学院dep_id,name,campus
-export function findAllDep() {
-  return request({
-    url: '/find/allDep',
-    method: 'get',
-    timeout: 5000,
-  })
-}

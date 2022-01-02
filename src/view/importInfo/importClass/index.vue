@@ -48,9 +48,6 @@ export default {
     padding-bottom: 15px;
     border-bottom: 1px solid rgb(154, 166, 182);
   }
-  #import_class .upload_box {
-    margin-left: 20px;
-  }
   #import_class .upload_box #upload_alert {
     margin-bottom: 20px;
     font-weight: bolder;

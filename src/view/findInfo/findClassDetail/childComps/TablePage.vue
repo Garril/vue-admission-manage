@@ -15,8 +15,17 @@
           </el-table-column>
           <el-table-column prop="girl" label="女生人数" width="120">
           </el-table-column>
+
+          <el-table-column
+            label="总人数"
+            width="80">
+            <template slot-scope="scope">
+              <span>{{parseInt(scope.row.boy)+parseInt(scope.row.girl)}}</span>
+            </template>
+          </el-table-column>          
           <el-table-column prop="year" label="建班年份" width="100">
           </el-table-column>
+          
           <!-- 修改班级名称 -->
           <el-table-column label="操作" width="180">
             <template slot-scope="scope">
@@ -75,7 +84,7 @@ export default {
   name:'table_page',
   data() {
     return {
-      currentPage: 1, // 当前页码
+      //currentPage: 1, // 当前页码，也应该是父组件传
       total: 20, // 总条数
       pageSize: 8, // 每页的数据条数
       showSign:false,
@@ -90,7 +99,7 @@ export default {
   components: {
     StuList
   },
-  props: ['classInfo'],
+  props: ['classInfo','currentPage'],
   methods: {
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -167,8 +176,6 @@ export default {
     margin-right: 15px;
   }  
   #table_page #back_btn {
-    position: absolute;
-    right: 54px;
-    top: 80px;
+    transform: translate(632px,-63px);
   }
 </style>

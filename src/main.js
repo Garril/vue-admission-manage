@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import htmlToPdf from "utils/htmlToPdf.js"
 
+
 Vue.config.debug = true
 
 

@@ -20,7 +20,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="goToCreateBook(scope.$index, scope.row)">查看录取通知书</el-button>            
+              @click="goToCreateBook(scope.$index, scope.row)">预览录取通知书</el-button>            
           </template>
         </el-table-column>        
 

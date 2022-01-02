@@ -35,15 +35,3 @@ export function findClassBySno(sno) {
     timeout: 5000,
   })
 }
-
-// 3.5 统计分班信息
-export function findAllClassSitu(dep_id,degree,spe_id) {
-  return request({
-    url: '/find/classAllSitu',
-    method: 'get',
-    params: {
-      dep_id,degree,spe_id
-    },
-    timeout: 5000,
-  })
-}
