@@ -10,7 +10,7 @@
 
         <div id="bookbox_content">
           <div>
-            <span>{{stuInfo.name}}  同学:</span>
+            <span id="book_stuname">{{stuInfo.name}}  同学:</span>
             <span id="book_avatar">
               <img :src="require('../../../assets/avatar/'+stuInfo.url)" alt="">
             </span>            
@@ -94,8 +94,8 @@ export default {
 <style>
 
 #create_book #bookbox {
-  width: 869px;
-  height: 1020px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -103,7 +103,7 @@ export default {
   border: 1px solid #5c5c58;
   background-color: #ffffff;
   margin-bottom: 40px;
-  padding: 0 50px 30px 50px;
+  padding: 0 50px 40px 50px;
 }
 
 #create_book #bookbox_head {
@@ -112,8 +112,8 @@ export default {
 }
 
 #create_book #bookbox_content {
-  margin-top: 150px;
-  width: 528px;
+  margin-top: 300px;
+  width: 55%;
   flex: 1;
 }
 
@@ -138,7 +138,7 @@ export default {
   display: flex;
   flex-wrap: nowrap;
   justify-content:space-between;
-  padding: 120px 40px 0px 10px;
+  padding: 140px 40px 0px 10px;
   font-size: 17px;
 }
 
@@ -148,6 +148,11 @@ export default {
   font-size: 17px;
   text-align: right;
   padding-right: 40px;
+}
+#create_book #book_stuname {
+  width: 36%;
+  height: 100%;
+  letter-spacing: 4px;
 }
 
 #create_book #book_avatar img{
@@ -165,9 +170,20 @@ export default {
   text-indent: 3rem;
 }
 #create_book{
-  padding-left: 18%;
+  transform: scale(0.8);
 }
 #create_book #pdf_btn {
-  margin-bottom: 50px;
+  margin:50px 0 50px 0;
 }
+#create_book #pdfCentent {
+  width: 1240px;
+  height: 1340px;
+}
+
+#create_book #bookbox_content div:last-child span {
+  width: 200px;
+  letter-spacing: 4px;
+}
+/* 分辨率是150像素/英寸时，A4纸的尺寸的图像的像素是1240×1754；
+分辨率是300像素/英寸时，A4纸的尺寸的图像的像素是2480×3508； */
 </style>
