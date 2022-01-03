@@ -81,7 +81,7 @@
       </el-table-column>
       
       
-      <el-table-column label="操作" width="280" v-if="sign">
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -165,29 +165,29 @@ export default {
         this.pageSize = 6;
       } else {
           findStu(this.sno,this.sign).then(res => {
-          if(res.status == '200') {
-            if(res.data!='') {
-              const obj = res.data;
-              if(obj.sex==1) {
-                obj.sex = "男"
+            if(res.status == '200') {
+              if(res.data!='') {
+                const obj = res.data;
+                if(obj.sex==1) {
+                  obj.sex = "男"
+                } else {
+                  obj.sex = "女"
+                }
+                obj.year = obj.year.slice(0,4);
+                if(this.stuInfo.length!=0) {
+                  this.stuInfo = [];
+                }
+                this.stuInfo.push(obj);
+                this.currentPage = 1;
+                this.total = 1;
+                this.pageSize = 1;
               } else {
-                obj.sex = "女"
+                alert("请检查输入的信息")
               }
-              obj.year = obj.year.slice(0,4);
-              if(this.stuInfo.length!=0) {
-                this.stuInfo = [];
-              }
-              this.stuInfo.push(obj);
-              this.currentPage = 1;
-              this.total = 1;
-              this.pageSize = 1;
             } else {
-              alert("请检查输入的信息")
+              alert("查找失败！请检查信息")
             }
-          } else {
-            alert("查找失败！请检查信息")
-          }
-        })
+          })
       }
       
     },
@@ -225,9 +225,7 @@ export default {
             alert("修改成功");
             const cur_index = (this.currentPage-1)*this.pageSize+this.editIndex;
             this.stuInfo[cur_index].sno = this.form.sno;
-            // this.total = 20;
-            // this.currentPage = 1;
-            // this.pageSize = 6;     
+            this.form.sno = '';
           } else if(res.data.code=='400'){
             alert(res.data.message);
           } else {
