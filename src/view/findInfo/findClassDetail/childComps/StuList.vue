@@ -1,9 +1,9 @@
 <template>
   <div id="stu_list">
     <el-table :data="stuList.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">          
-        <el-table-column prop="sno" label="学号" width="120">
+        <el-table-column prop="sno" label="学号" width="140">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120">
+        <el-table-column prop="name" label="姓名" width="130">
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="80">
         </el-table-column>
