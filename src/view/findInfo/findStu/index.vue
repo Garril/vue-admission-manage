@@ -81,7 +81,7 @@
       </el-table-column>
       
       
-      <el-table-column label="操作" width="280" v-if="sign">
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -148,7 +148,9 @@ export default {
       },
       currentPage: 1, // 当前页码
       total: 20, // 总条数
-      pageSize: 6, // 每页的数据条数  
+      pageSize: 6, // 每页的数据条数
+      editItem:{},
+      editIndex:0
     }
   },
   methods: {
@@ -163,29 +165,29 @@ export default {
         this.pageSize = 6;
       } else {
           findStu(this.sno,this.sign).then(res => {
-          if(res.status == '200') {
-            if(res.data!='') {
-              const obj = res.data;
-              if(obj.sex==1) {
-                obj.sex = "男"
+            if(res.status == '200') {
+              if(res.data!='') {
+                const obj = res.data;
+                if(obj.sex==1) {
+                  obj.sex = "男"
+                } else {
+                  obj.sex = "女"
+                }
+                obj.year = obj.year.slice(0,4);
+                if(this.stuInfo.length!=0) {
+                  this.stuInfo = [];
+                }
+                this.stuInfo.push(obj);
+                this.currentPage = 1;
+                this.total = 1;
+                this.pageSize = 1;
               } else {
-                obj.sex = "女"
+                alert("请检查输入的信息")
               }
-              obj.year = obj.year.slice(0,4);
-              if(this.stuInfo.length!=0) {
-                this.stuInfo = [];
-              }
-              this.stuInfo.push(obj);
-              this.currentPage = 1;
-              this.total = 1;
-              this.pageSize = 1;
             } else {
-              alert("请检查输入的信息")
+              alert("查找失败！请检查信息")
             }
-          } else {
-            alert("查找失败！请检查信息")
-          }
-        })
+          })
       }
       
     },
@@ -208,17 +210,29 @@ export default {
     },
     handleEdit(index,item) {
       this.dialogFormVisible = true;
+      this.editItem = item;
+      this.editIndex = index;
     },
     updateByNewSno() {
-      this.dialogFormVisible = false;
-      reviseStuBySno(this.stuInfo[0].sno,this.form.sno).then(res => {
-        if(res.status == '200') {
-          alert("修改成功");
-        } else {
-          alert("修改失败");
-        }
-      })
-      this.stuInfo[0].sno = this.form.sno;
+      if(this.editItem.sno == this.form.sno) {
+        alert("sno未做任何修改,修改失败");
+      } else if(this.form.sno=='') {
+        alert("sno不能为空")
+      } else {
+        this.dialogFormVisible = false;
+        reviseStuBySno(this.editItem.sno,this.form.sno).then(res => {
+          if(res.data.code == '200') {
+            alert("修改成功");
+            const cur_index = (this.currentPage-1)*this.pageSize+this.editIndex;
+            this.stuInfo[cur_index].sno = this.form.sno;
+            this.form.sno = '';
+          } else if(res.data.code=='400'){
+            alert(res.data.message);
+          } else {
+            alert("请求发送失败")
+          }
+        })
+      }
     },
       //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -256,19 +270,13 @@ export default {
   }
   
   #find_stu #new_sno_form {
-    position: absolute;
-    height: 20px;
-    left:26%;
-  }
-  #find_stu .el-dialog__header{
-    margin-bottom: 40px;
+    flex: 1;
   }
   #find_stu .el-dialog__footer {
-    margin-top: 20px;
     padding-bottom: 30px;
   }
   #find_stu .el-dialog__footer button:first-of-type {
-    margin-right: 15px;
+    margin-right: 25px;
   }
   #find_stu .el-form {
     display: flex;
@@ -280,4 +288,9 @@ export default {
     margin-left: 35px !important;
     text-align: left;
   }
+  #find_stu .el-dialog__body {
+    display: flex;
+    padding-left: 26%;
+  }
+
 </style>

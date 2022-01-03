@@ -122,8 +122,10 @@ export default {
       } else {
         reviseClassById(this.new_name,this.reviseClass.id).then(res => {
           if(res.status =='200') {
-            this.classInfo[this.index].class_name = this.new_name;
+            const cur_index = this.pageSize*(this.currentPage-1)+this.index;
+            this.classInfo[cur_index].class_name = this.new_name;
             alert("修改成功!");
+            this.new_name = '';
           } else {
             alert("修改失败!");
           }
@@ -166,11 +168,10 @@ export default {
     left:30%;
   }
   #table_page .el-dialog__header{
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   #table_page .el-dialog__footer {
-    margin-top: 20px;
-    padding-bottom: 30px;
+    padding: 50px 0 30px 0;
   }
   #table_page .el-dialog__footer button:first-of-type {
     margin-right: 15px;
