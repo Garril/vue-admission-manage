@@ -90,7 +90,7 @@ export default {
     height: 120px;
     display: block;
   }
-  #avatar_box {
+  #import_stu #avatar_box {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -98,7 +98,7 @@ export default {
     margin-right: 70px;
     margin-bottom: 20px;
   }
-  #avatar_box span {
+  #import_stu #avatar_box span {
     width: 100%;
     text-align: center;
     font-size: 14px;

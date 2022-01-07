@@ -61,6 +61,7 @@ export default {
     },
     goToCreateBook(index,item) {
       let t = (this.currentPage-1)*(this.pageSize)+index;
+      this.$store.commit('save_pathQuery',{stuInfo:item,t})
       this.$router.push({path:'/createBook',query: {
         stuInfo:item,
         t
@@ -74,5 +75,7 @@ export default {
 </script>
 
 <style>
-
+  #stu_list {
+    margin-top: -2%;
+  }
 </style>

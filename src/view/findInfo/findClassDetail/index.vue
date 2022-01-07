@@ -155,7 +155,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   #find_class_detail .findclass_detail_form{
     display: flex;

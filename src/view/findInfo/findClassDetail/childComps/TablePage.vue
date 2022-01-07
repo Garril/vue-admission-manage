@@ -182,8 +182,8 @@ export default {
   }
   #table_page .el-dialog__footer button:first-of-type {
     margin-right: 15px;
-  }  
+  }
   #table_page #back_btn {
-    transform: translate(632px,-63px);
+    transform: translate(873%,-155%);
   }
 </style>
