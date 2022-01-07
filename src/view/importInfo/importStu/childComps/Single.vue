@@ -113,7 +113,9 @@ export default {
             this.form.url = res.data;
             importSingleStu(this.form).then(res => {
               if(res.status == '200') {
-                alert("导入成功")
+                alert(res.data);
+              } else {
+                alert("请求发送失败");
               }
             })
             
