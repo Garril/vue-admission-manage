@@ -40,8 +40,13 @@
 
       <el-table-column
         prop="degree"
-        label="年级"
+        label="学历"
         width="60">
+          <template slot-scope="scope">
+            <span v-if="scope.row.degree == 3">本科</span>
+            <span v-else-if="scope.row.degree ==2">硕士</span>
+            <span v-else>博士</span>
+          </template>
       </el-table-column>
 
       <el-table-column
@@ -244,7 +249,11 @@ export default {
         this.currentPage = val;
     },
     goToCreateBook(index,item) { 
-      this.$router.push({path:'/createBook',query: {stuInfo:item}})
+      let t = (this.currentPage-1)*this.pageSize+index;
+      this.$router.push({path:'/createBook',query: {
+        stuInfo:item,
+        t
+      }})
     }
 
   },

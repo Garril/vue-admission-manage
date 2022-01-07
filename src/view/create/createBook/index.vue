@@ -51,7 +51,7 @@ export default {
       nowTime: "",
       studyYear:"4", // x年制本科生
       arriveDay:"9月1日", // 学生报到日期
-      footDate:"二〇二一年七月二十八日", // 通知书底部日期
+      footDate:"二〇二二年七月二十八日", // 通知书底部日期
     }
   },
   methods: {
