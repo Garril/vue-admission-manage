@@ -1,11 +1,11 @@
 import {
-  SAVE_USER,
-
+  SAVE_PATHQUERY,
+  
 } from './mutation-types.js'
 
 export default {
-  [SAVE_USER](state,payload) {
-    state.user = payload;
+  [SAVE_PATHQUERY](state,payload) {
+    state.pathQuery = payload;
   }
 
 }

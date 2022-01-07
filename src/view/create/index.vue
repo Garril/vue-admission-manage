@@ -1,6 +1,8 @@
 <template>
     <!--  -->
-    <router-view :key="$route.path + $route.query.t"></router-view>
+    <keep-alive>
+      <router-view :key="$route.path + $route.query.t"></router-view>
+    </keep-alive>
 </template>
 
 <script>

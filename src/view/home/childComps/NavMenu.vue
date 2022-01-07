@@ -44,7 +44,7 @@
             </template>
 
             <el-menu-item-group>
-                <el-menu-item index="/createBook">生成录取通知书</el-menu-item>
+                <el-menu-item @click="jumpToCreate()" index="/">生成录取通知书</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -58,17 +58,20 @@ export default {
   name:'NavMenu',
   data() {
     return {
-      
+
     }
   },
   methods: {
-
-  },
-  watch: {
-    $route(to,from) {
-
+    jumpToCreate() {
+      let query = this.$store.state.pathQuery;
+      if(query!=null) {
+        this.$router.push({
+          path:'/createBook',
+          query
+        })
+      }
     }
-  }
+  },
 }
 </script>
 
