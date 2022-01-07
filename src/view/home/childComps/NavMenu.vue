@@ -32,7 +32,7 @@
             <el-menu-item-group>
                 <el-menu-item index="/findStu">学生信息查询</el-menu-item>
                 <el-menu-item index="/findClassDetail">查询分班信息</el-menu-item>
-                <el-menu-item index="/findAllClassSitu">统计分班信息</el-menu-item>
+                <el-menu-item index="/findAllClassSitu">统计信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 

@@ -2,13 +2,20 @@
   <div id="table_page">
     <div v-if="showStuList">
     <!-- 表格 -->
-      <el-table :data="classInfo.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">          
-          <el-table-column prop="dep_name" label="学院" width="200">
+      <el-table :data="classInfo.slice((curPage-1)*pageSize,curPage*pageSize)" style="width: 100%">          
+          <el-table-column prop="dep_name" label="学院" width="150">
           </el-table-column>
-          <el-table-column prop="spe_name" label="专业" width="200">
+          <el-table-column prop="spe_name" label="专业" width="150">
           </el-table-column>
-          <el-table-column prop="class_no" label="班级序号" width="120">
-          </el-table-column>        
+          <el-table-column prop="degree" label="学历" width="80">
+            <template slot-scope="scope">
+              <span v-if="scope.row.degree == 3">本科</span>
+              <span v-else-if="scope.row.degree ==2">硕士</span>
+              <span v-else>博士</span>
+            </template>
+          </el-table-column>          
+          <el-table-column prop="class_no" label="班级序号" width="100">
+          </el-table-column>
           <el-table-column prop="class_name" label="班级名称" width="200">
           </el-table-column>
           <el-table-column prop="boy" label="男生人数" width="120">
@@ -43,7 +50,7 @@
       <!-- 分页器 -->
       <div class="block" style="margin-top:15px;">
           <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
+          :current-page="curPage" 
           :page-sizes="[5,8,10,20]" 
           :page-size="pageSize" 
           layout="total, sizes, prev, pager, next, jumper" 
@@ -84,7 +91,7 @@ export default {
   name:'table_page',
   data() {
     return {
-      //currentPage: 1, // 当前页码，也应该是父组件传
+      curPage: this.currentPage, // 当前页码，也应该是父组件先传,子组件保存值
       total: 20, // 总条数
       pageSize: 8, // 每页的数据条数
       showSign:false,
@@ -103,12 +110,12 @@ export default {
   methods: {
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
-        this.currentPage = 1;
+        this.curPage = 1;
         this.pageSize = val;
     },
     //当前页改变时触发 跳转其他页
     handleCurrentChange(val) {
-        this.currentPage = val;
+        this.curPage = val;
     },
     handleEdit(index,item) {
       this.showSign = true;
@@ -122,7 +129,7 @@ export default {
       } else {
         reviseClassById(this.new_name,this.reviseClass.id).then(res => {
           if(res.status =='200') {
-            const cur_index = this.pageSize*(this.currentPage-1)+this.index;
+            const cur_index = this.pageSize*(this.curPage-1)+this.index;
             this.classInfo[cur_index].class_name = this.new_name;
             alert("修改成功!");
             this.new_name = '';

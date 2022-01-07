@@ -60,7 +60,11 @@ export default {
         this.currentPage = val;
     },
     goToCreateBook(index,item) {
-      this.$router.push({path:'/createBook',query: {stuInfo:item}})
+      let t = (this.currentPage-1)*(this.pageSize)+index;
+      this.$router.push({path:'/createBook',query: {
+        stuInfo:item,
+        t
+      }})
     }
   },
   computed: {
