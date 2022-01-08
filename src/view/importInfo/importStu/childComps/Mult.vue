@@ -82,11 +82,12 @@ export default {
           file.append('file', this.excelList[0]);
           importMultiStu(file).then( res1 => {
             if(res1.status == '200') {
+              alert("第一个文件"+res1.data);
               file = new FormData();
               file.append('file', this.excelList[1]);
               importMultiStu(file).then( res2 => {
                 if(res2.status == "200") {
-                  alert("导入成功");
+                  alert(res2.data);
                 } else {
                   alert("第二个文件导入失败");
                 }
@@ -103,7 +104,7 @@ export default {
           file.append('file', this.excelList[0]);
           importMultiStu(file).then( res1 => {
             if(res1.status == '200') {
-              alert("导入成功");
+              alert(res1.data);
             } else {
               alert("导入失败");
             }
