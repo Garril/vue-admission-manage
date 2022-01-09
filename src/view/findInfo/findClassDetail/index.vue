@@ -9,7 +9,8 @@
         </el-form-item>
 
         <el-form-item label="学历">
-          <el-select v-model="form.degree" placeholder="请选择学历-不能为空" size="middle">
+          <el-select v-model="form.degree" placeholder="请选择学历" size="middle">
+            <el-option label="" value=""></el-option>
             <el-option label="本科" value="3"></el-option>
             <el-option label="硕士" value="2"></el-option>
             <el-option label="博士" value="1"></el-option>
@@ -17,7 +18,8 @@
         </el-form-item>
         
         <el-form-item label="学院">
-          <el-select v-model="form.dep_id" placeholder="请选择学院-不能为空" @change="dep_change" size="middle">
+          <el-select v-model="form.dep_id" placeholder="请选择学院" @change="dep_change" size="middle">
+            <el-option label="" value=""></el-option>
             <span v-for="(item,index) in data">
               <el-option :label="item.dep_name" :value="item.dep_id"></el-option>
             </span>
@@ -25,7 +27,7 @@
         </el-form-item>
 
         <el-form-item label="专业">
-          <el-select v-model="form.spe_id" placeholder="请选择专业-可以为空" size="middle">
+          <el-select v-model="form.spe_id" placeholder="请选择专业" size="middle">
             <el-option label="" value=""></el-option>
             <span v-for="(item,index) in right_spe">
               <el-option :label="item" :value="index+1"></el-option>
@@ -40,7 +42,7 @@
     </div>
 
     <!-- 表单信息 -->
-    <TablePage :classInfo="classInfo" :currentPage="currentPage"></TablePage>
+    <TablePage :classInfo="classInfo"></TablePage>
 
   </div>  
 </template>
@@ -74,6 +76,7 @@ export default {
   methods: {
     onSubmit() {
       if(this.form.sno!='') {
+
         findClassBySno(this.form.sno).then(res => {
           this.tempArr = res.data;
           this.tempArr.map(item => {
@@ -83,12 +86,17 @@ export default {
           this.tempArr = null;
           this.currentPage = 1;
         })
+
       } else { // 学号没填，考虑专业和学院
+
         if(this.form.dep_id == ''|| this.form.degree == '') { // 没填学院或者年级
             this.classInfo = this.saveAll;
+
         } else if(this.form.spe_id =='') { // 表示填了学院，但是没有填专业
           findClassByDep(this.form.dep_id,this.form.degree).then( res => {
+
             if(res.status=='200') {
+
               if(res.data.length !=0 ) {
                 this.tempArr = res.data;
                 this.tempArr.map(item => {
@@ -97,6 +105,7 @@ export default {
                 this.classInfo = this.tempArr;
                 this.tempArr = null;
                 this.currentPage = 1;
+
               } else {
                 alert("不存在对应班级,请改变检索条件")
               }
@@ -106,6 +115,7 @@ export default {
           })
         } else { // 填了专业
           findClassBySpe(this.form.dep_id,this.form.degree,this.form.spe_id).then( res => {
+
             if(res.status=='200') {
               if(res.data.length !=0 ) {
                 this.tempArr = res.data;
@@ -121,37 +131,57 @@ export default {
             } else {
               alert("请求查询失败,请重试");
             }
+
           })
         }
       }
     },
     dep_change(dep_id) {
+
       this.data.forEach((item,index) => {
         if(item.dep_id === dep_id) {
           this.right_spe = item.spe_arr;
         }
       })
       this.form.spe_id = "";
-    },    
+
+    },
+    getMultiClassByDep() {
+
+      findClassByDep(" "," ").then(res => {
+        if(res.status =='200') {
+          this.tempArr = res.data;
+          this.tempArr.map(item => {
+            item.year = item.year.slice(0,4);
+          })
+          this.classInfo = this.tempArr;
+          this.saveAll = this.tempArr;
+          this.tempArr = null;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+
+    }
   },
   created() {
+
     findDepSpe().then(res => {
       this.data = res.data;
     });
-    findClassByDep(" "," ").then(res => {
-      if(res.status =='200') {
-        this.tempArr = res.data;
-        this.tempArr.map(item => {
-          item.year = item.year.slice(0,4);
-        })
-        this.classInfo = this.tempArr;
-        this.saveAll = this.tempArr;
-        this.tempArr = null;
-      }
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+    this.getMultiClassByDep();
+
+  },
+  // 为了解决，初始时无数据，导入后，created不重新执行,一直无数据
+  // 同样，如果不接store，需要查询后才能获取新的，单个引入的班级的数据
+  activated() {
+
+    if(this.saveAll.length == 0 || this.$store.state.classUpdate) {
+      this.getMultiClassByDep();
+      this.$store.commit('update_classlist',false);
+    }
+
+  },
 }
 </script>
 

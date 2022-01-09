@@ -88,6 +88,8 @@ export default {
               importMultiStu(file).then( res2 => {
                 if(res2.status == "200") {
                   alert(res2.data);
+                  // 改变store，让列表获取更新
+                  this.$store.commit('update_stulist',true);
                 } else {
                   alert("第二个文件导入失败");
                 }
@@ -105,6 +107,8 @@ export default {
           importMultiStu(file).then( res1 => {
             if(res1.status == '200') {
               alert(res1.data);
+              // 改变store，让列表获取更新
+              this.$store.commit('update_stulist',true);
             } else {
               alert("导入失败");
             }

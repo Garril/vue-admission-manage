@@ -77,6 +77,8 @@ export default {
       importSingleClass(this.form).then(res => {
         if(res.status =='200') {
           alert("提交成功");
+          // 改变store，让列表获取更新
+          this.$store.commit('update_classlist',true);
         } else {
           alert("提交失败");
         }

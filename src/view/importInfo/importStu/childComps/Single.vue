@@ -114,6 +114,8 @@ export default {
             importSingleStu(this.form).then(res => {
               if(res.status == '200') {
                 alert(res.data);
+                  // 改变store，让列表获取更新
+                this.$store.commit('update_stulist',true);
               } else {
                 alert("请求发送失败");
               }

@@ -1,7 +1,7 @@
 <template>
   <div id="find_info">
     <!-- 二级路由，定义出口 -->
-    <keep-alive>
+    <keep-alive :max="5">
       <router-view></router-view>
     </keep-alive>
   </div>

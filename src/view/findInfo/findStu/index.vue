@@ -199,12 +199,15 @@ export default {
     handleDelete(index,item) {
       this.$confirm(`确定删除 学号为:${ this.stuInfo[0].sno } 的学生?`).then(res=>{
         // res: confirm
-        deleteStuBySno(this.stuInfo[0].sno).then(res => {
+        deleteStuBySno(item.sno).then(res => {
           if(res.status == '200') {
             alert("删除成功!");
             // 清空数据
             this.sno = "";
-            this.stuInfo= [];
+            this.getAllStuInfo();
+            this.total = 20;
+            this.currentPage = 1;
+            this.pageSize = 6;
           } else {
             alert("删除失败!");
           }
@@ -255,15 +258,35 @@ export default {
         stuInfo:item,
         t
       }})
+    },
+    getAllStuInfo() {
+      finAllStu().then(res=>{
+        this.stuInfo = res.data;
+        this.allInfo = res.data;
+      })
     }
 
   },
   created() {
-    finAllStu().then(res=>{
-      this.stuInfo = res.data;
-      this.allInfo = res.data;
-    })
-  }
+    this.getAllStuInfo();
+  },
+  // 为了解决，初始时无数据，导入后，created不重新执行,一直无数据
+  // activated() {
+  //   if(this.allInfo.length == 0) {
+  //     finAllStu().then(res=>{
+  //       this.stuInfo = res.data;
+  //       this.allInfo = res.data;
+  //     })
+  //   }
+  // },
+  // 修改后，可以解决批量导入后，无数据数据获取的情况，但
+  // 如果单个导入，他是不会重新刷新的，所以，可能需要一个新的store变量
+  activated() {
+    if(this.allInfo.length == 0 || this.$store.state.stuUpdate) {
+        this.getAllStuInfo();
+        this.$store.commit('update_stulist',false);
+    }
+  },
 }
 </script>
 

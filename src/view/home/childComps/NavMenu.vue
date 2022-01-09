@@ -44,7 +44,7 @@
             </template>
 
             <el-menu-item-group>
-                <el-menu-item @click="jumpToCreate()" index="/">生成录取通知书</el-menu-item>
+                <el-menu-item @click="jumpToCreate()" index="/createBook">生成录取通知书</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
