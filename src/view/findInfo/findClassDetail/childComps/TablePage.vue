@@ -76,7 +76,7 @@
 
     <div v-else>
       <el-button @click="backToFind()" id="back_btn" type="danger">返回</el-button>
-      <StuList :stuList="classStuInfo"></StuList>
+      <StuList :stuList="classStuInfo" @stuListNeedUpdate="childWantUpdateStuList"></StuList>
     </div>
 
   </div>  
@@ -101,7 +101,8 @@ export default {
       index:0,
       classStuInfo:[],
       showStuList:true,
-      tempChangeSex:[]
+      tempChangeSex:[],
+      tempItem:{}
     }
   },
   components: {
@@ -118,11 +119,13 @@ export default {
     handleCurrentChange(val) {
         this.curPage = val;
     },
+    // 点击改名按钮触发
     handleEdit(index,item) {
       this.showSign = true;
       this.index = index;
       this.reviseClass = item;
     },
+    // 修改班级代号
     reviseClassName() {
       this.showSign = false;
       if(this.new_name =='') {
@@ -140,9 +143,12 @@ export default {
         })        
       }
     },
+    // 查找
     getAllClassStu(index,item) {
+      this.tempItem = item;
       findClassAllStu(item.degree,item.dep_id,item.spe_id,item.class_no).then(res => {
         if(res.status == '200') {
+          // 转换性别的格式
           this.tempChangeSex = res.data;
           this.tempChangeSex.map(item => {
             if(item.sex =='1') {
@@ -158,11 +164,25 @@ export default {
         }
       })
     },
+    // 从班级学生列表点击 返回 出来了触发
     backToFind() {
       this.showStuList = true;
+      // 发送给父组件findClassDetail/index.vue，请求重新获取班级列表信息，人数可能发生变化了
+      this.$emit("updateClassInfoRightNow",true);
     },
+    childWantUpdateStuList(value) {
+      if(value) {
+        // 子组件StuList请求 父组件TabelPage 重新获取stulist信息
+        this.getAllClassStu(0,this.tempItem);
+      }
+    }
   },
   watch: {
+    // classInfo发生变化，分页器到第一页
+    // 为什么这样做？ 因为如果你一开始查找的是学院，比如有3页，你跳到3页去了
+    // 但是你又选了一次，这次加上了专业，专业只有一页，可curPage=3，
+    // 那你查询完后，显示的就是空白，因为不是第一页。
+    // 所以这里监听，为了每次查询后，就是第一页
     classInfo(newValue, oldValue) {
       this.curPage = 1;
       this.total = 20;

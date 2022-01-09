@@ -54,8 +54,10 @@ export default {
       }
       postLogin(user).then(res => {
         if(res.data.code==200) {
-          // 把登录用户存到vuex内
+          // 动态路由权限
           this.$router.addRoutes(asyncRoutes);
+
+          // 路由跳转
           if(this.$route.path.indexOf('/index')===-1) {
               this.$router.push('/index');
           }

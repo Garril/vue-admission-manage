@@ -94,7 +94,7 @@
           <el-button
             size="mini"
             type="primary"
-            @click="goToCreateBook(scope.$index, scope.row)">查看录取通知书</el-button>            
+            @click="goToCreateBook(scope.$index, scope.row)">预览录取通知书</el-button>            
           <el-button
             size="mini"
             type="danger"
@@ -159,30 +159,41 @@ export default {
     }
   },
   methods: {
+    // 选择录取号查询还是学号查询
     chooseImport(t) {
       this.sign = t;
     },
+    // 查询按钮触发
     onSubmit() {
+      // 没填学号，显示全部
       if(this.sno=='') {
+        // allInfo在activated的时候已经保存了之前的请求到的所有信息
+        // 这里就没有重新发送请求了！
         this.stuInfo = this.allInfo;
+        // 分页器跳到第一页
         this.total = 20;
         this.currentPage = 1;
         this.pageSize = 6;
       } else {
+        // 学号非空，调用查询学生信息的接口
           findStu(this.sno,this.sign).then(res => {
             if(res.status == '200') {
               if(res.data!='') {
                 const obj = res.data;
+                // 性别格式的转换，便于显示，也可以在 template中改
                 if(obj.sex==1) {
                   obj.sex = "男"
                 } else {
                   obj.sex = "女"
                 }
+                // 年份格式化，要前四位：2021
                 obj.year = obj.year.slice(0,4);
                 if(this.stuInfo.length!=0) {
+                  // 因为查询后，要显示的就只有一个，那就要改变stuInfo（双向绑定显示的数据）
                   this.stuInfo = [];
                 }
                 this.stuInfo.push(obj);
+
                 this.currentPage = 1;
                 this.total = 1;
                 this.pageSize = 1;
@@ -197,13 +208,14 @@ export default {
       
     },
     handleDelete(index,item) {
-      this.$confirm(`确定删除 学号为:${ this.stuInfo[0].sno } 的学生?`).then(res=>{
+      this.$confirm(`确定删除 学号为:${ item.sno } 的学生?`).then(res=>{
         // res: confirm
         deleteStuBySno(item.sno).then(res => {
           if(res.status == '200') {
             alert("删除成功!");
             // 清空数据
             this.sno = "";
+            // 重新请求，获取学生信息
             this.getAllStuInfo();
             this.total = 20;
             this.currentPage = 1;
@@ -216,21 +228,26 @@ export default {
 
       });
     },
+    // 修改学号
     handleEdit(index,item) {
       this.dialogFormVisible = true;
       this.editItem = item;
       this.editIndex = index;
     },
+    // 确认修改学号
     updateByNewSno() {
       if(this.editItem.sno == this.form.sno) {
         alert("sno未做任何修改,修改失败");
       } else if(this.form.sno=='') {
         alert("sno不能为空")
       } else {
+        // sno为一个新的值，取消显示
         this.dialogFormVisible = false;
+        // 发送修改学号的请求
         reviseStuBySno(this.editItem.sno,this.form.sno).then(res => {
           if(res.data.code == '200') {
             alert("修改成功");
+            // 本地信息修改，这里也可以换成重新请求数据！也应该是要重新请求的
             const cur_index = (this.currentPage-1)*this.pageSize+this.editIndex;
             this.stuInfo[cur_index].sno = this.form.sno;
             this.form.sno = '';
@@ -251,7 +268,8 @@ export default {
     handleCurrentChange(val) {
         this.currentPage = val;
     },
-    goToCreateBook(index,item) { 
+    // 去查看录取通知书
+    goToCreateBook(index,item) {
       let t = (this.currentPage-1)*this.pageSize+index;
       this.$store.commit('save_pathQuery',{stuInfo:item,t})
       this.$router.push({path:'/createBook',query: {
@@ -259,6 +277,7 @@ export default {
         t
       }})
     },
+    // 获取学生列表信息
     getAllStuInfo() {
       finAllStu().then(res=>{
         this.stuInfo = res.data;
@@ -267,9 +286,12 @@ export default {
     }
 
   },
-  created() {
-    this.getAllStuInfo();
-  },
+  // 这里不用created了，因为在其他地方加了功能，也会删除学生，
+  // 如果删除了学生，也需要更新列表，那么直接看下面的activated就好了
+  // created() {
+  //   this.getAllStuInfo();
+  // },
+
   // 为了解决，初始时无数据，导入后，created不重新执行,一直无数据
   // activated() {
   //   if(this.allInfo.length == 0) {
@@ -284,6 +306,7 @@ export default {
   activated() {
     if(this.allInfo.length == 0 || this.$store.state.stuUpdate) {
         this.getAllStuInfo();
+        // 改变store中的状态，其他人要刷新学生列表
         this.$store.commit('update_stulist',false);
     }
   },

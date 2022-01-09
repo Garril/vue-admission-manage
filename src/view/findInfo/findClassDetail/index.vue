@@ -42,7 +42,7 @@
     </div>
 
     <!-- 表单信息 -->
-    <TablePage :classInfo="classInfo"></TablePage>
+    <TablePage :classInfo="classInfo" @updateClassInfoRightNow="childNeedUpdate"></TablePage>
 
   </div>  
 </template>
@@ -74,9 +74,10 @@ export default {
     TablePage,
   },
   methods: {
+    // 查询分班信息按钮触发
     onSubmit() {
       if(this.form.sno!='') {
-
+        // 通过学号查询分班接口的调用
         findClassBySno(this.form.sno).then(res => {
           this.tempArr = res.data;
           this.tempArr.map(item => {
@@ -94,18 +95,17 @@ export default {
 
         } else if(this.form.spe_id =='') { // 表示填了学院，但是没有填专业
           findClassByDep(this.form.dep_id,this.form.degree).then( res => {
-
             if(res.status=='200') {
-
               if(res.data.length !=0 ) {
+                // tempArr进行格式的转化
                 this.tempArr = res.data;
                 this.tempArr.map(item => {
                   item.year = item.year.slice(0,4);
                 })
+                // 赋值给classInfo（双向绑定，用于table显示）
                 this.classInfo = this.tempArr;
                 this.tempArr = null;
                 this.currentPage = 1;
-
               } else {
                 alert("不存在对应班级,请改变检索条件")
               }
@@ -136,6 +136,7 @@ export default {
         }
       }
     },
+    // 多级联动选项
     dep_change(dep_id) {
 
       this.data.forEach((item,index) => {
@@ -146,8 +147,9 @@ export default {
       this.form.spe_id = "";
 
     },
+    // 重新获取所有分班信息的封装函数
     getMultiClassByDep() {
-
+      // 调用接口
       findClassByDep(" "," ").then(res => {
         if(res.status =='200') {
           this.tempArr = res.data;
@@ -161,21 +163,27 @@ export default {
       }).catch(err => {
         console.log(err);
       })
-
+    },
+    // 监听子组件TablePage的，表示他进行了学生的删除，这边需要进行重新请求（班级的人数变了）
+    childNeedUpdate(value) {
+      if(value) {
+        this.getMultiClassByDep();
+      }
     }
   },
   created() {
-
+    // 初始获取多级联动使用的，学院和对应专业
     findDepSpe().then(res => {
       this.data = res.data;
     });
+    // 获取所有分班信息
     this.getMultiClassByDep();
 
   },
   // 为了解决，初始时无数据，导入后，created不重新执行,一直无数据
   // 同样，如果不接store，需要查询后才能获取新的，单个引入的班级的数据
   activated() {
-
+    // 跳转到当前路由，判断是否要重新获取所有分班信息
     if(this.saveAll.length == 0 || this.$store.state.classUpdate) {
       this.getMultiClassByDep();
       this.$store.commit('update_classlist',false);
