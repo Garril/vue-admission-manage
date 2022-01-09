@@ -9,6 +9,8 @@ Vue.use(Vuex)
 
 const state = {
   pathQuery: {},
+  classUpdate:false,
+  stuUpdate:false,
 }
 
 const store = new Vuex.Store({

@@ -73,6 +73,7 @@
       </el-dialog>      
     </div>
 
+
     <div v-else>
       <el-button @click="backToFind()" id="back_btn" type="danger">返回</el-button>
       <StuList :stuList="classStuInfo"></StuList>
@@ -91,7 +92,7 @@ export default {
   name:'table_page',
   data() {
     return {
-      curPage: this.currentPage, // 当前页码，也应该是父组件先传,子组件保存值
+      curPage: 1, // 当前页码，也应该是父组件先传,子组件保存值
       total: 20, // 总条数
       pageSize: 8, // 每页的数据条数
       showSign:false,
@@ -106,7 +107,7 @@ export default {
   components: {
     StuList
   },
-  props: ['classInfo','currentPage'],
+  props: ['classInfo'],
   methods: {
     //每页条数改变时触发 选择一页显示多少行
     handleSizeChange(val) {
@@ -160,8 +161,14 @@ export default {
     backToFind() {
       this.showStuList = true;
     },
-
   },
+  watch: {
+    classInfo(newValue, oldValue) {
+      this.curPage = 1;
+      this.total = 20;
+      this.pageSize= 8;
+    },
+  }
 }
 </script>
 
