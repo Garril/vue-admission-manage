@@ -62,6 +62,7 @@ export default {
     }
   },
   methods: {
+    //如果在其他组件有预览过录取通知书，就会有query值，那么就跳到之前预览的通知书，而不是空白页面
     jumpToCreate() {
       let query = this.$store.state.pathQuery;
       if(query!=null) {

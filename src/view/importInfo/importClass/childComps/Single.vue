@@ -73,7 +73,9 @@ export default {
       this.form.spe_id = "";
     },
     onSubmit() {
+      // 本地时间获取
       this.form.year = new Date().getFullYear();
+      // 调用创建班级的接口
       importSingleClass(this.form).then(res => {
         if(res.status =='200') {
           alert("提交成功");

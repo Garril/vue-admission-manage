@@ -92,69 +92,7 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      if(this.imageUrl=='') {
-        alert("请上传头像!");
-      }
-      this.form.year = new Date().getFullYear();
-      for(let key in this.form) {
-        if(this.form[key]==''&& key!='url') {
-          
-          this.submitSign = 4;
-          break;
-        }
-      }
-      if(this.submitSign ==0) {
-        let fd = new FormData();
-        let len = this.fileList.length;        
-        fd.append('file',this.fileList[len-1].raw);
-        importStuAvatar(fd).then(res => {
-          if(res.status=='200') {
-            this.form.url = res.data;
-            importSingleStu(this.form).then(res => {
-              if(res.status == '200') {
-                alert(res.data);
-                  // 改变store，让列表获取更新
-                this.$store.commit('update_stulist',true);
-              } else {
-                alert("请求发送失败");
-              }
-            })
-            
-          } else {
-            alert("图片上传失败");
-          }
-        })
-      } else if(this.submitSign == 1) { // 表示头像格式不对
-        alert("上传头像图片只能是 JPG/JPEG/PNG 格式!");
-      } else if(this.submitSign == 2) {
-        alert("上传头像图片大小不能超过 2MB!")
-      } else if(this.submitSign == 3){
-        alert("上传头像图片只能是 JPG/JPEG/PNG 格式! 且！上传头像图片大小不能超过 2MB! ");
-      } else if(this.submitSign == 4){
-        alert("请将信息补充完整!");
-        this.submitSign = 0;
-      }
-
-    },
-    onQuitUpload() {
-      this.form.id="";
-      this.form.name="";
-      this.form.degree="";
-      this.form.sex="";
-      this.form.dep_id="";
-      this.form.spe_id="";
-    },
-    dep_change(dep_id) {
-      this.data.forEach((item,index) => {
-        if(item.dep_id === dep_id) {
-          this.right_spe = item.spe_arr;
-        }
-      })
-      this.form.spe_id = "";
-    },
-
-    // 头像上传处理
+    // 头像上传到 前端本地 处理
     uploadAvatarChanged(file,fileList) {
       let isJPG = true;
       const isLt2M = file.raw.size / 1024 / 1024 < 2;
@@ -179,9 +117,85 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
       // 保存文件信息到fileList
       this.fileList = fileList;
-    }    
+    },
+
+    // 创建学生
+    onSubmit() {
+      // 要求上传头像到 前端本地
+      if(this.imageUrl=='') {
+        alert("请上传头像!");
+      }
+      // 获取本地时间写入form
+      this.form.year = new Date().getFullYear();
+      // 遍历form的属性，url暂时不考虑，因为还没生成，imageUrl是假url
+      for(let key in this.form) {
+        if(this.form[key]==''&& key!='url') {
+          // 4是一种情况，表示信息没填写完整
+          this.submitSign = 4;
+          break;
+        }
+      }
+      // 0就是默认值，到这里表示表格都填写完整了
+      if(this.submitSign ==0) {
+        // fileList是上传的头像的文件信息
+        let fd = new FormData();
+        let len = this.fileList.length;        
+        fd.append('file',this.fileList[len-1].raw);
+        // 上传头像数据流
+        importStuAvatar(fd).then(res => {
+          if(res.status=='200') {
+            // 头像上传成功，保存后端返回的url
+            this.form.url = res.data;
+            // 创建学生 的接口的调用
+            importSingleStu(this.form).then(res => {
+              if(res.status == '200') {
+                // 创建结果信息提示
+                alert(res.data);
+                  // 改变store内值，让其他组件 学生列表信息重新获取
+                this.$store.commit('update_stulist',true);
+              } else {
+                alert("请求发送失败");
+              }
+            })
+            
+          } else {
+            alert("图片上传失败");
+          }
+        })
+      } else if(this.submitSign == 1) { // 表示头像格式不对
+        alert("上传头像图片只能是 JPG/JPEG/PNG 格式!");
+      } else if(this.submitSign == 2) {
+        alert("上传头像图片大小不能超过 2MB!")
+      } else if(this.submitSign == 3){
+        alert("上传头像图片只能是 JPG/JPEG/PNG 格式! 且！上传头像图片大小不能超过 2MB! ");
+      } else if(this.submitSign == 4){
+        alert("请将信息补充完整!");
+        // 初始化 submitSign的值为0
+        this.submitSign = 0;
+      }
+
+    },
+    // 清空按钮触发
+    onQuitUpload() {
+      this.form.id="";
+      this.form.name="";
+      this.form.degree="";
+      this.form.sex="";
+      this.form.dep_id="";
+      this.form.spe_id="";
+    },
+    // 多级联动选项
+    dep_change(dep_id) {
+      this.data.forEach((item,index) => {
+        if(item.dep_id === dep_id) {
+          this.right_spe = item.spe_arr;
+        }
+      })
+      this.form.spe_id = "";
+    }, 
   },
   created() {
+    // 拿到 学院和 对应的 所有的专业，用于多级联动选项
     findDepSpe().then(res => {
       this.data = res.data;
     });
