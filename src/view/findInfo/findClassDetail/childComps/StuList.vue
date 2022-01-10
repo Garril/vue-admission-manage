@@ -50,9 +50,9 @@
     <!-- 修改学号栏 -->
     <el-dialog title="修改学号" :visible.sync="dialogFormVisible" center>
 
-      <el-form :model="form" label-width="80px" id="new_sno_form">
+      <el-form :model="form" label-width="80px" id="new_sno_form" @submit.native.prevent>
         <el-form-item label="新学号" label-width="120px">
-          <el-input v-model="form.sno" autocomplete="off"></el-input>
+          <el-input v-model="form.sno" autocomplete="off" @keyup.enter.native.prevent="updateByNewSno"></el-input>
         </el-form-item>
       </el-form>
 

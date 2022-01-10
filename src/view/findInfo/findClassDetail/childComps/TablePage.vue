@@ -60,9 +60,9 @@
 
       <el-dialog title="修改班级名称" :visible.sync="showSign" center>
 
-        <el-form label-width="120px" id="new_sno_form">
+        <el-form label-width="120px" id="new_sno_form" @submit.native.prevent>
           <el-form-item label="班级名称" label-width="100px">
-            <el-input v-model="new_name" autocomplete="off" :placeholder="reviseClass.class_name"></el-input>
+            <el-input v-model="new_name" autocomplete="off" :placeholder="reviseClass.class_name" @keyup.enter.native.prevent="reviseClassName"></el-input>
           </el-form-item>
         </el-form>
 
@@ -145,6 +145,7 @@ export default {
     },
     // 查找
     getAllClassStu(index,item) {
+      this.$emit('changeBtnDisable',true);
       this.tempItem = item;
       findClassAllStu(item.degree,item.dep_id,item.spe_id,item.class_no).then(res => {
         if(res.status == '200') {
@@ -166,6 +167,7 @@ export default {
     },
     // 从班级学生列表点击 返回 出来了触发
     backToFind() {
+      this.$emit('changeBtnDisable',false);
       this.showStuList = true;
       // 发送给父组件findClassDetail/index.vue，请求重新获取班级列表信息，人数可能发生变化了
       this.$emit("updateClassInfoRightNow",true);
