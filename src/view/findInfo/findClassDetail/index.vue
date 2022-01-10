@@ -36,13 +36,13 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">查询</el-button>
+          <el-button type="primary" @click="onSubmit" :disabled="btn_disable">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <!-- 表单信息 -->
-    <TablePage :classInfo="classInfo" @updateClassInfoRightNow="childNeedUpdate"></TablePage>
+    <TablePage :classInfo="classInfo" @updateClassInfoRightNow="childNeedUpdate" @changeBtnDisable="changeBtnDisable"></TablePage>
 
   </div>  
 </template>
@@ -67,7 +67,8 @@ export default {
       right_spe:[],
       classInfo:[],
       tempArr:[],
-      saveAll:[]
+      saveAll:[],
+      btn_disable:false
     }
   },
   components: {
@@ -169,6 +170,10 @@ export default {
       if(value) {
         this.getMultiClassByDep();
       }
+    },
+    // 改变上方查询按钮可选不可选状态
+    changeBtnDisable(value) {
+      this.btn_disable = value;
     }
   },
   created() {
