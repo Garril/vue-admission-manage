@@ -21,10 +21,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 演示效果
 #### 导入
-![导入](https://s3.bmp.ovh/imgs/2022/03/6af0e3c36d467c23.png)
+![image-20220301120246257](http://forupload.oss-cn-guangzhou.aliyuncs.com/img/image-20220301120246257.png)
 #### 查询
-![查询1](https://s3.bmp.ovh/imgs/2022/03/6380c56bfe7883a7.png)
-![查询2](https://s3.bmp.ovh/imgs/2022/03/7080790df4a1ecc7.png)
-![查询3](https://s3.bmp.ovh/imgs/2022/03/af39f296afd63a7c.png)
+![Snipaste_2022-03-01_11-50-36](http://forupload.oss-cn-guangzhou.aliyuncs.com/img/Snipaste_2022-03-01_11-50-36.png)
+
+![Snipaste_2022-03-01_11-51-15](http://forupload.oss-cn-guangzhou.aliyuncs.com/img/Snipaste_2022-03-01_11-51-15.png)
+
+![Snipaste_2022-03-01_11-51-41](http://forupload.oss-cn-guangzhou.aliyuncs.com/img/Snipaste_2022-03-01_11-51-41.png)
 #### 打印
-![打印](https://s3.bmp.ovh/imgs/2022/03/828f1383b227ace4.png)
+![Snipaste_2022-03-01_11-53-14](http://forupload.oss-cn-guangzhou.aliyuncs.com/img/Snipaste_2022-03-01_11-53-14.png)
