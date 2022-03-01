@@ -240,6 +240,8 @@ export default {
         alert("sno未做任何修改,修改失败");
       } else if(this.form.sno=='') {
         alert("sno不能为空")
+      } else if(this.form.sno.length!=10) {
+        alert("请输入十位的学号")
       } else {
         // sno为一个新的值，取消显示
         this.dialogFormVisible = false;
