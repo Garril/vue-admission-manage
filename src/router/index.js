@@ -91,6 +91,13 @@ export const asyncRoutes = [
               title: '统计分班信息'
             },
             component: () => import('../view/findInfo/findAllClassSitu/index.vue')
+          },
+          {
+            path:'/findRate',
+            meta: {
+              title: '人数占比统计'
+            },
+            component: () => import('../view/findInfo/findRate/index.vue')
           }
         ]
       },
